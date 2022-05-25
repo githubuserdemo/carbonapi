@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/bookingcom/carbonapi/branch/master/graph/badge.svg)](https://codecov.io/gh/bookingcom/carbonapi)
 [![gitter](https://img.shields.io/badge/chat-on%20gitter-green.svg)](https://gitter.im/carbonapi/community)
 
+
 Carbonapi is a Go-based Graphite frontend. It provides two binaries,
 `carbonapi` and `carbonzipper`, that unify responses from multiple Graphite
 backends and provide math and graphing functions.
