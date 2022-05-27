@@ -27,8 +27,7 @@ jobs:
         uses: actions/checkout@v2
       - name: check
         run: |
-           # make all check
-           make check vet
+           make all check
            echo $?
 #       - name: integration test
 #         run: tests/system_test.sh
