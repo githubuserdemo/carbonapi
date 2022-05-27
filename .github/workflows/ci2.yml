@@ -1,0 +1,50 @@
+name: ci2
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.18.x]
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: install cairo
+        run: |
+           brew install pkg-config
+           curl -L https://www.cairographics.org/releases/cairo-1.14.6.tar.xz -o cairo.tar.xz
+           tar -xf cairo.tar.xz && cd cairo-1.14.6
+           ./configure --prefix=/usr/local --disable-dependency-tracking
+           make install
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: check
+        run: |
+           # make all check
+           make check vet
+           echo $?
+#       - name: integration test
+#         run: tests/system_test.sh
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
+          version: v1.45.2
+          # Optional: working directory, useful for monorepos
+          # working-directory: somedir
+          # Optional: golangci-lint command line arguments.
+          #args: --new-from-rev=f7cdb31b6a6c8
+          # Optional: show only new issues if it's a pull request. The default value is `false`.
+          # only-new-issues: true
